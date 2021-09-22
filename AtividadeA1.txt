@@ -1,201 +1,260 @@
-/*  CODIGO ESCRITO PARA QUE FOSSE TRATADOS DE
-    QUASE TODAS AS POSSIBILIDADES DE ENTRADA DO
-    USUARIO SEM QUE FOSSE NECESSARIO USAR DE 
-    TRATAMENTO DE ERROS, NAO FOSSE USADO 'POO',
-    FOSSE QUASE QUE POR COMPLETAMENTE ESTRUTURADA,
-    SIMPLES DE SE INDENTIFICAR CADA FUNCAO/BLOCOS DE CODIGO
-    E DIDATICO. 
-*/
-/*  --------------------------------------------------------------------
-    |                  SISTEMA DE CADASTRO DE                          |
-    |                       VEICULOS                                   |
-    --------------------------------------------------------------------
-*/
+// -*- C++ -*- forwarding header.
 
-#include <iostream>
-#include <string>
-#include <cstring> //importada pra usar strlen()
-#include <windows.h>//importada pra usar Sleep()
+// Copyright (C) 1997-2014 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
 
-using namespace std;
-//variaveis globais
-const int tam = 10;
-static int index = 0;  //variavel estatica para leitura analize geral dos vetores
-string registro[4][tam]; // vetor usado para armazenar os veiculos cadastrados
-//funcao que apresenta na tela de acordo com o index
-string screen(int val){
-    string frase;
-    if(val == 0){frase = "\nMARCA: ";
-    }else if (val == 1){frase = "\nMODELO: ";
-    }else if (val == 2){frase = "\nANO: ";
-    }else if (val == 3){frase = "\nPLACA: ";
-    }else{frase = "ERRO";}
-    return frase;
-}
-//funcao simples que apresenta o menu/opcoes ao usuario
-void menu(){
-    cout << "\n-----ESCOLHA UMA OPICAO-----";
-    cout << "\n1 - CADASTRO de veiculos";
-    cout << "\n2 - LISTA de veiculos cadastrados";
-    cout << "\n3 - BUSCAR POR MODELO cadastrados";
-    cout << "\n4 - BUSCAR PELO ANO veiculos";
-    cout << "\n5 - BUSCAR Por ANO ACIMA de:";
-    cout << "\n0 - SAIR\ndigite:  ";
-}
-//funcao chamada caso o usuario seleciole cadastro, que ira registrar os dados no vetor registro
-void cadastro(){
-    while(true){ //loop simples para multiplos cadastros
-        if(index >= tam){ // uma verificação de espaço no vetor
-            cout << "\n...limite atingido...";
-            break;
-        }
-        int controle;  // variavel pra controle do loop
-        cout << "\nDigite a MARCA do veiculo: ";
-        cin >> registro[0][index];
-        cout << "\nDigite o MODELO do veiculo: ";
-        cin >> registro[1][index];
-        cout << "\nDigite o ANO do veiculo: ";
-        cin >> registro[2][index];
-        cout << "\nDigite a PLACA do veiculo.\nobs: O formato deve ser (XXX-YYYY): ";
-        cin >> registro[3][index];
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-        while (registro[3][index].length() != 8){ // repeticao que ficara ate satisfazer o formato correto
-            cout << "\nFormato incorreto...\ndigite novamente:\nPlACA: ";
-            cin >> registro[3][index];}
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
 
-        index++; // um incremento para a funcao estatica guardar o valor  de veiculos cadastrados
-        cout << "\n----CADASTRO COMPLETO----\nGostaria de cadastrar mais?\n1-SIM    0-NAO:\n";
-        cin >> controle;
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
 
-        if(controle == 1){
-            continue;
-        }
-        else if(controle == 0){
-            break;
-        }
-        else{cout << "\nopcao invalida\n ...voltando ao menu.";
-            Sleep(2500);
-        }
-        system("cls"); // limpa a tela
-    }
-}
-// funcao que lista todos o veiculos guardados
-void listar(){
-    for(int i = 0;i<tam;i++){
-        if(i == index){ // caso o loop tenha sido executado a mesma quantidade que cadastros, esta condicao finalizara o loop
-            break;
-        }
-        cout << "\nRegistro: ----- " << i + 1 << " -----\n";
-        for (int j = 0; j < 4; j++){
-          cout << screen(j) << registro[j][i]; // mostra de forma organizada os cadastros
-        }
-        cout << "\n___________________________\n";
-    }
-}
-// funcao que busca pelo modelo informado
-void buscaModelo(){
-    int controle = 1;
-    string modelo;
-    int analisados = 0; // uma variavel de controle que verifica se há o modelo informado
+/** @file include/cstdlib
+ *  This is a Standard C++ Library file.  You should @c \#include this file
+ *  in your programs, rather than any of the @a *.h implementation files.
+ *
+ *  This is the C++ version of the Standard C Library header @c stdlib.h,
+ *  and its contents are (mostly) the same as that header, but are all
+ *  contained in the namespace @c std (except for names which are defined
+ *  as macros in C).
+ */
 
-    while(controle == 1){ // loop simples pra fazer varias buscas
-        cout << "\n---BUSCAR POR MODELO---\nQual o Modelo: ";
-        cin >> modelo;
-        cout << "\n Fazendo Busca...";
-        Sleep(1500);
+//
+// ISO C++ 14882: 20.4.6  C library
+//
 
-        for(int i=0;i < index;i++){
-            if(registro[1][i] == modelo){
-                cout << "\nregistro: ----- "<< i+1 << " -----";
-                cout << "\nMODELO: " << registro[1][i];
-                cout << "\nMARCA: " << registro[0][i];
-                cout << "\nANO: " << registro[2][i];
-                cout << "\nPLACA: " << registro[3][i];
-                analisados++; // incrementa a cada cadastro correspondente  ao informado
-            }
-        }
-        // condicoes para continuar a execuçao do codigo
-        if(analisados == 0){ cout<<"\nExistem: "<<index<<" Veiculos no registro, mas nenhum com o informado.\nVerifique se digitou corretamente.";
-        }// caso nenhum modelo tenha correspondido este if informa ao usuario
-        cout << "\nGostaria de refazer a Busca? (1 - SIM| 0 - NAO): ";
-        cin >> controle;
-        //condicoes que podem parar o loop de acordo com a opcao escolhida
-        if(controle == 0){
-            controle = 0;
-            break;
-        }else if(controle == 1){
-            analisados = 0;
-            continue;
-        }else{
-            cout << "\nOpcao invalida... Voltando ao menu";
-            controle = 0;
-            Sleep(2000);
-            break;
-        }
-    }
-}
-// funcao pra fazer uma BUSCA nos cadastrados pelo mesmo ANO ou ACIMA
-void busca(int valor){
-    int anoRecebido;
-    int analisados = 0;
-    cout << "\n---BUSCAR POR ANO---\nQual o ANO: ";
-    cin >> anoRecebido;
-    for(int i = 0;i < index;i++){
-        if(stoi(registro[2][i])==anoRecebido && valor == 1){ //stoi é uma funcao que converte string para int
-            cout <<"\nregistro: ----- "<< i+1 << " -----";
-            cout <<"\nANO: "<<registro[2][i];
-            cout <<"\nMARCA: "<<registro[0][i];
-            cout <<"\nMODELO: "<<registro[1][i];
-            cout <<"\nPLACA: "<<registro[3][i];
-            analisados++
-        }
-        if(stoi(registro[2][i])> anoRecebido && valor == 2){ //stoi é uma funcao que converte string para int
-            cout <<"\nregistro: ----- "<< i+1 << " -----";
-            cout <<"\nANO: "<<registro[2][i];
-            cout <<"\nMARCA: "<<registro[0][i];
-            cout <<"\nMODELO: "<<registro[1][i];
-            cout <<"\nPLACA: "<<registro[3][i];
-            analisados++
-        }
-    }
-    if(analisados == 0){ // informa ao usuario caso nao encontre registros
-        cout << "\nNao foi encontrado nenhum registro igual ao informado.\n"
-    }
-}
-//funcao principal C++
-int main(){
-    bool verdade = true; // variavel para controle do proximo loop
-    int option;
-    while (verdade){
-        menu(); // mostra o menu de opçãoes
-        cin >> option ; // captura a entrada fornecida pelo usuario
-        switch (option){
-        case 0: // caso escolhido cancela o loop e encerra o processo
-            verdade = false;
-            break; 
-        case 1: // caso escolhido mostra ao usuario a ficha de cadastro
-            cadastro();
-            system("cls");
-            break;
-        case 2: //caso escolhido lista ao usuario todos os modelos registrados
-            system("cls");
-            listar();
-            break;
-        case 3: // caso escolhido chamara a funcao que fara a busca pelo modelo do veiculo
-            system("cls");
-            buscaModelo();
-            break;
-        case 4: // caso escolhido chama a funcao buscar que fara a busca pelo ano informado
-            system("cls");
-            busca(1); // o valor 1 indica que buscará pelo numero exato
-            break;
-        case 5: // caso escolhi chamara a funcao que fara a busca por registro com o ano acima do informado
-            system("cls");
-            busca(2); // o valor 2 indica que buscará por numero acima do informado
-            break;
-                }
-    }
-    cout << "saindo ..."; // aviso de fim do processo do codigo
-    Sleep(2000); // um tempo pra uma saida dramatica
-    return 0;
-}
+#pragma GCC system_header
+
+#include <bits/c++config.h>
+
+#ifndef _GLIBCXX_CSTDLIB
+#define _GLIBCXX_CSTDLIB 1
+
+#if !_GLIBCXX_HOSTED
+// The C standard does not require a freestanding implementation to
+// provide <stdlib.h>.  However, the C++ standard does still require
+// <cstdlib> -- but only the functionality mentioned in
+// [lib.support.start.term].
+
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
+
+namespace std
+{
+  extern "C" void abort(void) throw () _GLIBCXX_NORETURN;
+  extern "C" int atexit(void (*)(void)) throw ();
+  extern "C" void exit(int) throw () _GLIBCXX_NORETURN;
+#if __cplusplus >= 201103L
+# ifdef _GLIBCXX_HAVE_AT_QUICK_EXIT
+  extern "C" int at_quick_exit(void (*)(void)) throw ();
+# endif
+# ifdef _GLIBCXX_HAVE_QUICK_EXIT
+  extern "C" void quick_exit(int) throw() _GLIBCXX_NORETURN;
+# endif
+#endif
+} // namespace std
+
+#else
+
+#include <stdlib.h>
+
+// Get rid of those macros defined in <stdlib.h> in lieu of real functions.
+#undef abort
+#undef abs
+#undef atexit
+#if __cplusplus >= 201103L
+# ifdef _GLIBCXX_HAVE_AT_QUICK_EXIT
+#  undef at_quick_exit
+# endif
+#endif
+#undef atof
+#undef atoi
+#undef atol
+#undef bsearch
+#undef calloc
+#undef div
+#undef exit
+#undef free
+#undef getenv
+#undef labs
+#undef ldiv
+#undef malloc
+#undef mblen
+#undef mbstowcs
+#undef mbtowc
+#undef qsort
+#if __cplusplus >= 201103L
+# ifdef _GLIBCXX_HAVE_QUICK_EXIT
+#  undef quick_exit
+# endif
+#endif
+#undef rand
+#undef realloc
+#undef srand
+#undef strtod
+#undef strtol
+#undef strtoul
+#undef system
+#undef wcstombs
+#undef wctomb
+
+namespace std _GLIBCXX_VISIBILITY(default)
+{
+_GLIBCXX_BEGIN_NAMESPACE_VERSION
+
+  using ::div_t;
+  using ::ldiv_t;
+
+  using ::abort;
+  using ::abs;
+  using ::atexit;
+#if __cplusplus >= 201103L
+# ifdef _GLIBCXX_HAVE_AT_QUICK_EXIT
+  using ::at_quick_exit;
+# endif
+#endif
+  using ::atof;
+  using ::atoi;
+  using ::atol;
+  using ::bsearch;
+  using ::calloc;
+  using ::div;
+  using ::exit;
+  using ::free;
+  using ::getenv;
+  using ::labs;
+  using ::ldiv;
+  using ::malloc;
+#ifdef _GLIBCXX_HAVE_MBSTATE_T
+  using ::mblen;
+  using ::mbstowcs;
+  using ::mbtowc;
+#endif // _GLIBCXX_HAVE_MBSTATE_T
+  using ::qsort;
+#if __cplusplus >= 201103L
+# ifdef _GLIBCXX_HAVE_QUICK_EXIT
+  using ::quick_exit;
+# endif
+#endif
+  using ::rand;
+  using ::realloc;
+  using ::srand;
+  using ::strtod;
+  using ::strtol;
+  using ::strtoul;
+  using ::system;
+#ifdef _GLIBCXX_USE_WCHAR_T
+  using ::wcstombs;
+  using ::wctomb;
+#endif // _GLIBCXX_USE_WCHAR_T
+
+#ifndef __CORRECT_ISO_CPP_STDLIB_H_PROTO
+  inline long
+  abs(long __i) { return __builtin_labs(__i); }
+
+  inline ldiv_t
+  div(long __i, long __j) { return ldiv(__i, __j); }
+#endif
+
+#ifdef _GLIBCXX_USE_LONG_LONG
+  inline long long
+  abs(long long __x) { return __builtin_llabs (__x); }
+#endif
+
+#if !defined(__STRICT_ANSI__) && defined(_GLIBCXX_USE_INT128)
+  inline __int128
+  abs(__int128 __x) { return __x >= 0 ? __x : -__x; }
+#endif
+
+_GLIBCXX_END_NAMESPACE_VERSION
+} // namespace
+
+#if _GLIBCXX_USE_C99
+
+#undef _Exit
+#undef llabs
+#undef lldiv
+#undef atoll
+#undef strtoll
+#undef strtoull
+#undef strtof
+#undef strtold
+
+namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
+{
+_GLIBCXX_BEGIN_NAMESPACE_VERSION
+
+#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  using ::lldiv_t;
+#endif
+#if _GLIBCXX_USE_C99_CHECK || _GLIBCXX_USE_C99_DYNAMIC
+  extern "C" void (_Exit)(int) throw () _GLIBCXX_NORETURN;
+#endif
+#if !_GLIBCXX_USE_C99_DYNAMIC
+  using ::_Exit;
+#endif
+
+#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  using ::llabs;
+
+  inline lldiv_t
+  div(long long __n, long long __d)
+  { lldiv_t __q; __q.quot = __n / __d; __q.rem = __n % __d; return __q; }
+
+  using ::lldiv;
+#endif
+
+#if _GLIBCXX_USE_C99_LONG_LONG_CHECK || _GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  extern "C" long long int (atoll)(const char *) throw ();
+  extern "C" long long int
+    (strtoll)(const char * __restrict, char ** __restrict, int) throw ();
+  extern "C" unsigned long long int
+    (strtoull)(const char * __restrict, char ** __restrict, int) throw ();
+#endif
+#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  using ::atoll;
+  using ::strtoll;
+  using ::strtoull;
+#endif
+  using ::strtof;
+  using ::strtold;
+
+_GLIBCXX_END_NAMESPACE_VERSION
+} // namespace __gnu_cxx
+
+namespace std
+{
+#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  using ::__gnu_cxx::lldiv_t;
+#endif
+  using ::__gnu_cxx::_Exit;
+#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+  using ::__gnu_cxx::llabs;
+  using ::__gnu_cxx::div;
+  using ::__gnu_cxx::lldiv;
+#endif
+  using ::__gnu_cxx::atoll;
+  using ::__gnu_cxx::strtof;
+  using ::__gnu_cxx::strtoll;
+  using ::__gnu_cxx::strtoull;
+  using ::__gnu_cxx::strtold;
+} // namespace std
+
+#endif // _GLIBCXX_USE_C99
+
+#endif // !_GLIBCXX_HOSTED
+
+#endif
